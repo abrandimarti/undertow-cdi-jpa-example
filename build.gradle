@@ -1,0 +1,43 @@
+plugins {
+    id 'com.github.ben-manes.versions' version '0.14.0'
+}
+
+apply plugin: 'application'
+
+mainClassName = "undertow.Main"
+
+repositories { 
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jboss.resteasy:resteasy-undertow:3.1.2.Final'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+
+    compile 'org.jboss.resteasy:resteasy-cdi:3.1.2.Final'
+    compile 'org.jboss.weld.servlet:weld-servlet:2.4.3.Final'
+    
+    compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+    compile 'org.hibernate:hibernate-core:5.2.10.Final'
+    runtime 'org.hibernate:hibernate-c3p0:5.2.10.Final'
+    runtime 'javax:javaee-api:7.0'
+    runtime 'mysql:mysql-connector-java:5.1.42'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.7.0'
+}
+
+configurations.all {
+    resolutionStrategy {
+      // fail eagerly on version conflict (includes transitive dependencies)
+      // e.g. multiple different versions of the same dependency (group and name are equal)
+      failOnVersionConflict()
+      force "org.jboss.logging:jboss-logging:3.3.0.Final"
+      force "javax.activation:activation:1.1.1"
+
+      // cache dynamic versions for 10 minutes
+      cacheDynamicVersionsFor 10*60, 'seconds'
+      // don't cache changing modules at all
+      cacheChangingModulesFor 0, 'seconds'
+    }
+  }
